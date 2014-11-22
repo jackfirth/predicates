@@ -27,7 +27,7 @@
                        [in-range? (-> real? real? predicate/c)]))
 
 (define (->** rest-contract result-contract)
-  (->* () () #:rest rest-contract result-contract))
+  (->* () () #:rest (listof rest-contract) result-contract))
 (define predicate*/c (->** any/c boolean?))
 (define predicate*->/c (->** predicate/c predicate/c))
 (define predicate->/c (-> predicate/c predicate/c))
