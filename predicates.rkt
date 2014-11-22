@@ -14,16 +14,16 @@
                        [>? (-> real? (-> real? boolean?))]
                        [<=? (-> real? (-> real? boolean?))]
                        [>=? (-> real? (-> real? boolean?))]
-                       [if? (parametric->/c (X Y Z) (->* (predicate/c (-> X Y)) ((-> X Z)) (-> X (or/c Y Z))))]
-                       [when? (parametric->/c (X Y) (-> predicate/c (-> X Y) (-> X (or/c Y void?))))]
-                       [unless? (parametric->/c (X Y) (-> predicate/c (-> X Y) (-> X (or/c Y void?))))]
-                       [first? (-> predicate/c (-> list? boolean?))]
+                       [first? (-> predicate/c (-> nonempty-list? boolean?))]
                        [rest? (-> predicate/c (-> nonempty-list? boolean?))]
                        [all? (-> predicate/c (-> list? boolean?))]
                        [listof? (->** predicate/c (-> list? boolean?))]
                        [not-null? predicate/c]
                        [nonempty-list? predicate/c]
                        [nonsingular-list? predicate/c]
+                       [if? (parametric->/c (X Y Z) (->* (predicate/c (-> X Y)) ((-> X Z)) (-> X (or/c Y Z))))]
+                       [when? (parametric->/c (X Y) (-> predicate/c (-> X Y) (-> X (or/c Y void?))))]
+                       [unless? (parametric->/c (X Y) (-> predicate/c (-> X Y) (-> X (or/c Y void?))))]
                        [in-range? (-> real? real? predicate/c)]))
 
 (define (->** rest-contract result-contract)
