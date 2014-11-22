@@ -3,16 +3,11 @@ predicates
 
 A racket package for creating predicates in a point-free style
 
-    (define symbol-or-string? (or? symbol? string?))
-    (symbol-or-string? 'blah) ; true
-    (symbol-or-string? "foo") ; true
-    (symbol-or-string? 8) ; false
+    (filter (or? symbol? string?) '(1 a 3 "blah" b 4 5))
+    -> '(a "blah" b)
     
-    (define even-number? (and? number? even?))
-    (even-number? 6) ; true
-    (even-number? 9) ; false
-    (even-number? 'foo) ; false
+    (filter (and? number? even?) '(a b 2 5 6 "foo" bar 9 8))
+    -> '(2 6 8)
     
-    (define not-symbol? (not? symbol?))
-    (not-symbol? 1) ; true
-    (not-symbol? 'bar) ; false
+    (filter (not? symbol?) '(a b 2 3 "baz" d))
+    -> '(2 3 "baz")
