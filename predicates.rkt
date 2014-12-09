@@ -14,10 +14,15 @@
                        [>? (-> real? (-> real? boolean?))]
                        [<=? (-> real? (-> real? boolean?))]
                        [>=? (-> real? (-> real? boolean?))]
-                       [first? (-> predicate/c (-> nonempty-list? boolean?))]
+                       [length>? (-> exact-nonnegative-integer? (-> list? boolean?))]
+                       [first? (->** predicate/c (-> nonempty-list? boolean?))]
+                       [second? (->** predicate/c (-> (and? list? (length>? 1)) boolean?))]
+                       [third? (->** predicate/c (-> (and? list? (length>? 2)) boolean?))]
+                       [fourth? (->** predicate/c (-> (and? list? (length>? 3)) boolean?))]
                        [rest? (-> predicate/c (-> nonempty-list? boolean?))]
                        [all? (-> predicate/c (-> list? boolean?))]
                        [listof? (->** predicate/c (-> list? boolean?))]
+                       [list-with-head? (->** predicate/c predicate/c)]
                        [not-null? predicate/c]
                        [nonempty-list? predicate/c]
                        [nonsingular-list? predicate/c]
@@ -109,13 +114,27 @@
   (check-pred null? (unless-string?->null 'foo))
   (check-pred void? (unless-string?->null "smurf")))
 
-(define ((first? p) lst) (p (first lst)))
+(define ((length>? n) lst) (> (length lst) n))
+(define (((list-ref? ref) . ps) lst) ((apply and? ps) (ref lst)))
+(define first? (list-ref? first))
+(define second? (list-ref? second))
+(define third? (list-ref? third))
+(define fourth? (list-ref? fourth))
 (define ((rest? p) lst) (p (rest lst)))
 (define ((all? p) lst) (andmap p lst))
 (define ((listof? . ps) lst) (andmap (λ (p a) (p a)) ps lst))
 
+(define (list-with-head? . ps)
+  (if (empty? ps)
+      list?
+      (and? nonempty-list?
+            (first? (first ps))
+            (rest? (apply list-with-head?
+                          (rest ps))))))
+
 (module+ test
   (check-pred-domain (first? symbol?) '(blah "foo" 8) '(2 #\a))
+  (check-pred-domain (second? string?) '(6 "faz" c) '(2 #\a))
   (check-pred-domain (rest? empty?) '(blah) '(blah foo))
   (check-pred-domain (all? char?) '(#\a #\b #\c) '(#\a 5 #\c))
   (check-pred-domain (listof? string? char? char?) '("blah" #\a #\b) '("foo" #\a 8)))
