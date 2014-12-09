@@ -72,8 +72,12 @@ Returns a predicate that returns @racket[#t] for any real input that is @racket[
 
 @section{List Predicate Constructors}
 
-@defproc[(first? [pred (-> any? boolean?)]) (-> list? boolean?)]{
-Returns a predicate that returns @racket[#t] for any list whose first item satisfies @racket[pred].
+@deftogether[(@defproc[(first? [pred (-> any? boolean?)] ...+) (-> list? boolean?)]
+              @defproc[(second? [pred (-> any? boolean?)] ...+) (-> list? boolean?)]
+              @defproc[(third? [pred (-> any? boolean?)] ...+) (-> list? boolean?)]
+              @defproc[(fourth? [pred (-> any? boolean?)] ...+) (-> list? boolean?)])]{
+Returns a predicate that returns @racket[#t] for any list whose first, second, third, or fourth item satisfies
+@racket[(and? pred ...)], depending on the procedure chosen.
 }
 
 @defproc[(rest? [pred (-> any? boolean?)]) (-> list? boolean?)]{
