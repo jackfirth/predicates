@@ -21,7 +21,7 @@
                        [fourth? (->** predicate/c (-> (and? list? (length>? 3)) boolean?))]
                        [rest? (-> predicate/c (-> nonempty-list? boolean?))]
                        [all? (-> predicate/c (-> list? boolean?))]
-                       [listof? (->** predicate/c (-> list? boolean?))]
+                       [listof? (->** predicate/c predicate/c)]
                        [list-with-head? (->** predicate/c predicate/c)]
                        [not-null? predicate/c]
                        [nonempty-list? predicate/c]
@@ -31,11 +31,15 @@
                        [unless? (parametric->/c (X Y) (-> predicate/c (-> X Y) (-> X (or/c Y void?))))]
                        [in-range? (-> real? real? predicate/c)]))
 
+;; Contract helpers
+
 (define (->** rest-contract result-contract)
   (->* () () #:rest (listof rest-contract) result-contract))
 (define predicate*/c (->** any/c boolean?))
 (define predicate*->/c (->** predicate/c predicate/c))
 (define predicate->/c (-> predicate/c predicate/c))
+
+;; Testing module init
 
 (module+ test
   (require rackunit)
@@ -45,6 +49,8 @@
   (define-check (check-pred-domain* p true-inputs false-inputs)
     (map (λ (a) (check-true (p a))) true-inputs)
     (map (λ (a) (check-false (p a))) false-inputs)))
+
+;; Logic predicates
 
 (define (true? a) (if a #t #f))
 
@@ -77,6 +83,8 @@
   (check-true (first-num-or-second-sym? 4 'baz))
   (check-false (first-num-or-second-sym? "smurf" '())))
 
+;; Comparison predicates
+
 (define-values (eq?? equal?? eqv?? =? <? >? <=? >=?)
   (apply values
          (map (λ (cmp) (λ (a) (λ (b) (cmp b a))))
@@ -91,6 +99,8 @@
   (check-pred-domain (>? 7) 10 7)
   (check-pred-domain (<=? 10) 10 12)
   (check-pred-domain (>=? 5) 5 3))
+
+;; Condition combinators
 
 (define ((if? p f [g (λ (x) x)]) a) (if (p a) (f a) (g a)))
 (define (when? p f) (if? p f void))
@@ -114,23 +124,29 @@
   (check-pred null? (unless-string?->null 'foo))
   (check-pred void? (unless-string?->null "smurf")))
 
+;; List predicates
+
 (define ((length>? n) lst) (> (length lst) n))
+(define ((length=? n) lst) (= (length lst) n))
+(define ((length<? n) lst) (< (length lst) n))
+
 (define (((list-ref? ref) . ps) lst) ((apply and? ps) (ref lst)))
 (define first? (list-ref? first))
 (define second? (list-ref? second))
 (define third? (list-ref? third))
 (define fourth? (list-ref? fourth))
+
 (define ((rest? p) lst) (p (rest lst)))
 (define ((all? p) lst) (andmap p lst))
-(define ((listof? . ps) lst) (andmap (λ (p a) (p a)) ps lst))
+(define ((listof? . ps) lst)
+  (and (list? lst)
+       (= (length lst) (length ps))
+       (andmap (λ (p a) (p a)) ps lst)))
 
-(define (list-with-head? . ps)
-  (if (empty? ps)
-      list?
-      (and? nonempty-list?
-            (first? (first ps))
-            (rest? (apply list-with-head?
-                          (rest ps))))))
+(define ((list-with-head? . ps) lst)
+  (and (list? lst)
+       (>= (length lst) (length ps))
+       (andmap (λ (p a) (p a)) ps (take (length ps) lst))))
 
 (module+ test
   (check-pred-domain (first? symbol?) '(blah "foo" 8) '(2 #\a))
@@ -147,6 +163,8 @@
   (check-pred-domain not-null? 8 '())
   (check-pred-domain nonempty-list? '(4 5) 8)
   (check-pred-domain nonsingular-list? '(foo bar) '(foo)))
+
+;; Range-checking
 
 (define (in-range? low high [exclusive #f])
   (let-values ([(<? >?) (if exclusive (values <? >?) (values <=? >=?))])

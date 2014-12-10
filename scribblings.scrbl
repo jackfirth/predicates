@@ -70,30 +70,7 @@ Returns a predicate that returns @racket[#t] for any real input that is @racket[
 Returns a predicate that returns @racket[#t] for any real input that is @racket[>=] to @racket[v].
 }
 
-@section{List Predicate Constructors}
-
-@deftogether[(@defproc[(first? [pred (-> any? boolean?)] ...+) (-> list? boolean?)]
-              @defproc[(second? [pred (-> any? boolean?)] ...+) (-> list? boolean?)]
-              @defproc[(third? [pred (-> any? boolean?)] ...+) (-> list? boolean?)]
-              @defproc[(fourth? [pred (-> any? boolean?)] ...+) (-> list? boolean?)])]{
-Returns a predicate that returns @racket[#t] for any list whose first, second, third, or fourth item satisfies
-@racket[(and? pred ...)], depending on the procedure chosen.
-}
-
-@defproc[(rest? [pred (-> any? boolean?)]) (-> list? boolean?)]{
-Returns a predicate that returns @racket[#t] for any list for which the @racket[rest] of the list satisfies @racket[pred].
-}
-
-@defproc[(all? [pred (-> any? boolean?)]) (-> list? boolean?)]{
-Returns a predicate that returns @racket[#t] for any list for which every element in the list satisfies @racket[pred].
-}
-
-@defproc[(listof? [pred (-> any? boolean?)] ...+) (-> list? boolean?)]{
-Returns a predicate that returns @racket[#t] for any list for which the first element of the list satisfies the
-first @racket[pred], the second element satisfies the second @racket[pred], and so on for each @racket[pred].
-}
-
-@section{Common List Predicates}
+@section{List Predicates}
 
 @defproc[(not-null? [v any?]) boolean?]{
 Returns @racket[#t] if @racket[v] is @racket[null?], and returns @racket[#f] otherwise. Equivalent to @racket[(not? null?)].
@@ -107,6 +84,44 @@ Equivalent to @racket[(and? list? (not? null?))].
 @defproc[(nonsingular-list? [v any?]) boolean?]{
 Returns @racket[#t] if @racket[v] is a list containing at least two elements, and returns @racket[#f] otherwise.
 Equivalent to @racket[(and? list? (not? null?) (rest? (not? null?)))].
+}
+
+@defproc[(length>? [n exact-nonnegative-integer?]) (-> list? boolean?)]{
+Returns a predicate that returns @racket[#t] for any list with more than @racket[n] elements.
+}
+
+@defproc[(length=? [n exact-nonnegative-integer?]) (-> list? boolean?)]{
+Returns a predicate that returns @racket[#t] for any list with @racket[n] elements.
+}
+
+@defproc[(length<? [n exact-nonnegative-integer?]) (-> list? boolean?)]{
+Returns a predicate that returns @racket[#t] for any list with fewer than @racket[n] elements.
+}
+
+@deftogether[(@defproc[(first? [pred (-> any? boolean?)] ...+) (-> nonempty-list? boolean?)]
+              @defproc[(second? [pred (-> any? boolean?)] ...+) (-> (and? list? (length>? 1)) boolean?)]
+              @defproc[(third? [pred (-> any? boolean?)] ...+) (-> (and? list? (length>? 2)) boolean?)]
+              @defproc[(fourth? [pred (-> any? boolean?)] ...+) (-> (and? list? (length>? 3)) boolean?)])]{
+Returns a predicate that returns @racket[#t] for any list whose first, second, third, or fourth item satisfies
+@racket[(and? pred ...)], depending on the procedure chosen.
+}
+
+@defproc[(rest? [pred (-> any? boolean?)]) (-> list? boolean?)]{
+Returns a predicate that returns @racket[#t] for any list for which the @racket[rest] of the list satisfies @racket[pred].
+}
+
+@defproc[(all? [pred (-> any? boolean?)]) (-> list? boolean?)]{
+Returns a predicate that returns @racket[#t] for any list for which every element in the list satisfies @racket[pred].
+}
+
+@defproc[(listof? [pred (-> any? boolean?)] ...+) (-> any? boolean?)]{
+Returns a predicate that returns @racket[#t] for any value that is a list with one element for each @racket[pred]
+whose first element satisfies the first @racket[pred], second element satisfies the second @racket[pred], and so
+on for each @racket[pred].
+}
+
+@defproc[(list-with-head? [pred (-> any? boolean?)] ...+) (-> any? boolean?)]{
+Similar to listof? but returns @racket[#t] for lists with extra elements
 }
 
 @section{Conditional Combinators}
