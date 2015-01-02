@@ -1,20 +1,36 @@
 #lang scribble/manual
 
-@(require "predicates.rkt")
+@(require scribble/eval
+          (for-label predicates
+                     racket/base
+                     racket/list))
 
 @title{Predicates}
+
+@(define the-eval (make-base-eval))
+@(the-eval '(require "main.rkt"))
+
 @defmodule[predicates]
+
+@author[@author+email["Jack Firth" "jackhfirth@gmail.com"]]
 
 These functions allow for easy construction of @italic{predicates} - functions that take an input and return a boolean - for
 use with contracts and @racket[filter] variants. This library makes it easy to define predicates in a @italic{point-free} style,
 meaning that you can construct new predicates in terms of old predicates without defining them as functions with arguments.
 
+source code: @url["https://github.com/jackfirth/predicates"]
+
 @section{Logic Predicate Constructors}
 
 @defproc[(and? [pred (-> any? boolean?)] ...+) (-> any? boolean?)]{
-Combines each @racket[pred] into a single predicate that returns @racket[#t] for its if all the original @racket[pred]s
-return @racket[#t] for the input.
-}
+  Combines each @racket[pred] into a single predicate that returns @racket[#t] for its if all the original @racket[pred]s
+  return @racket[#t] for the input.
+  @examples[#:eval the-eval
+    (define small-positive-number? (and? number? (λ (x) (< 0 x 10))))
+    (small-positive-number? 6)
+    (small-positive-number? 123)
+    (small-positive-number? 'foo)
+    ]}
 
 @defproc[(or? [pred (-> any? boolean?)] ...+) (-> any? boolean?)]{
 Combines each @racket[pred] into a single predicate that returns @racket[#t] for its input if any of the original @racket[pred]s
