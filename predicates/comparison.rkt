@@ -10,7 +10,7 @@
                        [>? (-> real? (-> real? boolean?))]
                        [<=? (-> real? (-> real? boolean?))]
                        [>=? (-> real? (-> real? boolean?))]
-                       [in-range? (-> real? real? predicate/c)]))
+                       [in-range? (->* (real? real?) (boolean?) predicate/c)]))
 
 (require "logic.rkt")
 
