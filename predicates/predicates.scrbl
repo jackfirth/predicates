@@ -52,7 +52,6 @@ source code: @url["https://github.com/jackfirth/predicates"]
     (nonzero? 8)
     (nonzero? 0)
     (nonzero? -5)
-    (nonzero? "foo")
     ]}
 
 @defproc[(and?* [pred (-> any? boolean?)] ...+) (->* () () #:rest any? boolean?)]{
@@ -120,7 +119,6 @@ source code: @url["https://github.com/jackfirth/predicates"]
     (7? 7)
     (7? (+ 3 4))
     (7? 0)
-    (7? 'foo)
     ]}
 
 @defproc[(<? [v real?]) (-> real? boolean?)]{
@@ -255,7 +253,7 @@ source code: @url["https://github.com/jackfirth/predicates"]
   Returns a predicate that returns @racket[#t] for any list for which every element in
   the list satisfies @racket[pred].
   @examples[#:eval the-eval
-    (define all-numbers? (all? numbers?))
+    (define all-numbers? (all? number?))
     (all-numbers? '(1 2 3 4))
     (all-numbers? '(1 2 foo 4))
     (all-numbers? '())
@@ -334,7 +332,7 @@ source code: @url["https://github.com/jackfirth/predicates"]
   and @racket[high]. If @racket[exclusive?] is @racket[#t], then values @racket[=] to
   @racket[low] or @racket[high] will return @racket[#f].
   @examples[#:eval the-eval
-    (define zero-to-ten? (in-range 0 10))
+    (define zero-to-ten? (in-range? 0 10))
     (zero-to-ten? 5)
     (zero-to-ten? 0)
     (zero-to-ten? 10)
