@@ -3,6 +3,8 @@
 (require "contract-helpers.rkt")
 
 (provide (contract-out [length>? (-> exact-nonnegative-integer? (-> list? boolean?))]
+                       [length=? (-> exact-nonnegative-integer? (-> list? boolean?))]
+                       [length<? (-> exact-nonnegative-integer? (-> list? boolean?))]
                        [first? (->** predicate/c (-> nonempty-list? boolean?))]
                        [second? (->** predicate/c (-> (and/c list? (length>? 1)) boolean?))]
                        [third? (->** predicate/c (-> (and/c list? (length>? 2)) boolean?))]
@@ -42,7 +44,7 @@
 (define ((list-with-head? . ps) lst)
   (and (list? lst)
        (>= (length lst) (length ps))
-       (andmap (λ (p a) (p a)) ps (take (length ps) lst))))
+       (andmap (λ (p a) (p a)) ps (take lst (length ps)))))
 
 (module+ test
   (check-pred-domain (first? symbol?) '(blah "foo" 8) '(2 #\a))

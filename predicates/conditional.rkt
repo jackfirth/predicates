@@ -6,9 +6,11 @@
   (require rackunit
            "test-helpers.rkt"))
 
-(provide (contract-out [if? (parametric->/c (X Y Z) (->* (predicate/c (-> X Y)) ((-> X Z)) (-> X (or/c Y Z))))]
-                       [when? (parametric->/c (X Y) (-> predicate/c (-> X Y) (-> X (or/c Y void?))))]
-                       [unless? (parametric->/c (X Y) (-> predicate/c (-> X Y) (-> X (or/c Y void?))))]))
+(provide (contract-out [if? (->* (predicate/c (-> any/c any))
+                                 ((-> any/c any))
+                                 (-> any/c any))]
+                       [when? (-> predicate/c (-> any/c any) (-> any/c any))]
+                       [unless? (-> predicate/c (-> any/c any) (-> any/c any))]))
 
 ;; Condition combinators
 
