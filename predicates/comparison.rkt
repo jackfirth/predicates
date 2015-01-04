@@ -2,9 +2,9 @@
 
 (require "contract-helpers.rkt")
 
-(provide (contract-out [eq?? predicate->/c]
-                       [equal?? predicate->/c]
-                       [eqv?? predicate->/c]
+(provide (contract-out [eq?? (-> any/c predicate/c)]
+                       [equal?? (-> any/c predicate/c)]
+                       [eqv?? (-> any/c predicate/c)]
                        [=? (-> real? (-> real? boolean?))]
                        [<? (-> real? (-> real? boolean?))]
                        [>? (-> real? (-> real? boolean?))]
