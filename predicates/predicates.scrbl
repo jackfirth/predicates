@@ -338,7 +338,7 @@ source code: @url["https://github.com/jackfirth/predicates"]
     (zero-to-ten? 10)
     (zero-to-ten? 15)
     (zero-to-ten? -100)
-    (define between-zero-and-ten? (in-range 0 10 #t))
+    (define between-zero-and-ten? (in-range? 0 10 #t))
     (between-zero-and-ten? 5)
     (between-zero-and-ten? 0)
     (between-zero-and-ten? 10)
