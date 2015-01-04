@@ -96,9 +96,9 @@ source code: @url["https://github.com/jackfirth/predicates"]
   to @racket[v].
   @examples[#:eval the-eval
     (define eqv-7? (eqv?? 7))
-    (define eqv-7? 7)
-    (define eqv-7? 8)
-    (define eqv-7? 'foo)
+    (eqv-7? 7)
+    (eqv-7? 8)
+    (eqv-7? 'foo)
     ]}
 
 @defproc[(equal?? [v any?]) (-> any? boolean?)]{
