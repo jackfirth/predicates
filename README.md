@@ -1,9 +1,9 @@
 predicates
 ==========
 
-A racket package for creating predicates in a point-free style.
-
 [Documentation](http://pkg-build.racket-lang.org/doc/predicates/index.html)
+
+A racket package for creating predicates in a point-free style.
 
 A *predicate* is a function that takes one argument and returns either true or false. You can think of it as a question, such as `even?` which returns true for even numbers and false for odd numbers. This package provides several tools for working with predicates.
 
@@ -69,4 +69,4 @@ Once you've got all these fancy predicates, you can use them to add conditional 
 (collatz 1) ; -> 4
 ```
 
-To install, run `raco pkg install predicates`. Then to use in a module, use `(require predicates)`.
+To install, run `raco pkg install predicates`. Then to use in a module, `(require predicates)`.
