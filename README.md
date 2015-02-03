@@ -18,7 +18,7 @@ Predicates can be combined logically
 ; -> '(2 3 "baz")
 ```
 
-Predicates can be constructed for comparisons
+Predicates can be created to compare things
 
 ```racket
 (filter (<? 5) '(3 4 5 6 7))
@@ -30,7 +30,7 @@ Predicates can be constructed for comparisons
 ; -> '(2 5 8)
 ```
 
-Predicates can be manipulated to query lists
+Predicates can be created and combined to query lists
 
 ```racket
 (nonempty-list? '(a b c)) ; -> #t
@@ -55,3 +55,14 @@ Predicates can be manipulated to query lists
 ((length>? 2) '(a)) ; -> #f
 ```
 
+Once you've got all these fancy predicates, you can use them to add conditional logic to functions.
+
+```racket
+(define (halve x) (/ x 2))
+(define (triple-add1 x) (add1 (* x 3)))
+(define collatz (if? even? halve triple-add1))
+(collatz 4) ; -> 2
+(collatz 5) ; -> 16
+(collatz 7) ; -> 22
+(collatz 1) ; -> 4
+```
