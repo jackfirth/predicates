@@ -29,3 +29,20 @@ Predicates can be constructed for comparisons
 (filter digit? '(a b 2 5 c "foo" 12 15 8))
 ; -> '(2 5 8)
 ```
+
+Predicates can be manipulated to query lists
+
+```racket
+(define second-number? (second? number?))
+(second-number? '(1 2 3)) ; -> #t
+(second-number? '(1 a 3)) ; -> #f
+(define three-nums? (listof? number? number? number?))
+(three-nums? '(1 2 3)) ; -> #t
+(three-nums? '(1 2 3 4)) ; -> #f
+(three-nums? '(a b 2)) ; -> #f
+(define starts-with-sym-str? (list-with-head? symbol? string?))
+(starts-with-sym-str? '(a "foo" 1 2 3)) ; -> #t
+(starts-with-sym-str? '(a 1 2 3)) ; -> #f
+((length>? 2) '(a b c)) ; -> #t
+```
+((length>? 2) '(a)) ; -> #f
