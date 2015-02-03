@@ -33,16 +33,25 @@ Predicates can be constructed for comparisons
 Predicates can be manipulated to query lists
 
 ```racket
+(nonempty-list? '(a b c)) ; -> #t
+(nonempty-list? '()) ; -> #f
+(nonsingular-list? '(a b c)) ; -> #t
+(nonsingular-list? '(a)) ; -> #f
+
 (define second-number? (second? number?))
 (second-number? '(1 2 3)) ; -> #t
 (second-number? '(1 a 3)) ; -> #f
+
 (define three-nums? (listof? number? number? number?))
 (three-nums? '(1 2 3)) ; -> #t
 (three-nums? '(1 2 3 4)) ; -> #f
 (three-nums? '(a b 2)) ; -> #f
+
 (define starts-with-sym-str? (list-with-head? symbol? string?))
 (starts-with-sym-str? '(a "foo" 1 2 3)) ; -> #t
 (starts-with-sym-str? '(a 1 2 3)) ; -> #f
+
 ((length>? 2) '(a b c)) ; -> #t
-```
 ((length>? 2) '(a)) ; -> #f
+```
+
