@@ -69,4 +69,14 @@ Once you've got all these fancy predicates, you can use them to add conditional 
 (collatz 1) ; -> 4
 ```
 
+Or use them as loop conditions in higher-order loop construction functions.
+
+```racket
+(define last (compose first (while? nonsingular-list? rest)))
+(last '(1 2 3 4 5))
+(define (last? p) (compose p last))
+((last? even?) '(1 2 3 4 5))   ; -> #f
+((last? even?) '(1 2 3 4 5 6)) ; -> #t
+```
+
 To install, run `raco pkg install predicates`. Then to use in a module, `(require predicates)`.
