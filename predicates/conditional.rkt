@@ -1,16 +1,23 @@
 #lang racket
 
-(require "contract-helpers.rkt")
+(require "contract-helpers.rkt"
+         "logic.rkt")
 
 (module+ test
   (require rackunit
            "test-helpers.rkt"))
 
-(provide (contract-out [if? (->* (predicate/c (-> any/c any))
-                                 ((-> any/c any))
-                                 (-> any/c any))]
-                       [when? (-> predicate/c (-> any/c any) (-> any/c any))]
-                       [unless? (-> predicate/c (-> any/c any) (-> any/c any))]))
+(provide
+ (contract-out
+  [if? (->* (predicate/c (-> any/c any))
+            ((-> any/c any))
+            (-> any/c any))]
+  [when? (-> predicate/c (-> any/c any) (-> any/c any))]
+  [unless? (-> predicate/c (-> any/c any) (-> any/c any))]
+  [while? (-> predicate/c (-> any/c any) (-> any/c any))]
+  [until? (-> predicate/c (-> any/c any) (-> any/c any))]
+  [do-while? (-> predicate/c (-> any/c any) (-> any/c any))]
+  [do-until? (-> predicate/c (-> any/c any) (-> any/c any))]))
 
 ;; Condition combinators
 
@@ -36,3 +43,29 @@
   (check-pred null? (unless-string?->null 'foo))
   (check-pred void? (unless-string?->null "smurf")))
 
+;; Core point-free looping
+(define ((while? p f) v)
+  (if (p v)
+      ((while? p f) (f v))
+      v))
+
+;; Logical inverse of while?
+(define (until? p f) (while? (not? p) f))
+
+;; Same as while?/until?, except f is called at least once on the input
+;; Like a do while loop versus a while loop in imperative languages
+(define (do-while? p f) (compose (while? p f) f))
+(define (do-until? p f) (compose (until? p f) f))
+
+(module+ test
+  (define (negative? x) (< x 0))
+  (define (add10 x) (+ x 10))
+  (define (sub10 x) (- x 10))
+  (check-eqv? ((while? negative? add10) -24) 6)
+  (check-eqv? ((while? negative? add10) 13) 13)
+  (check-eqv? ((until? negative? sub10) 28) -2)
+  (check-eqv? ((until? negative? sub10) -100) -100)
+  (check-eqv? ((do-while? negative? add10) -24) 6)
+  (check-eqv? ((do-while? negative? add10) 13) 23)
+  (check-eqv? ((do-until? negative? sub10) 28) -2)
+  (check-eqv? ((do-until? negative? sub10) -100) -110))
