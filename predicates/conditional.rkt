@@ -71,14 +71,23 @@
   (check-eqv? ((do-until? negative? sub10) 28) -2)
   (check-eqv? ((do-until? negative? sub10) -100) -110))
 
-(define (group vs n)
-  (let loop ([groups '()] [vs vs])
-    (if (not ((length<? n) vs))
-        (let-values ([(next-group next-vs) (split-at vs n)])
-          (loop (cons next-group groups) next-vs))
-        (reverse groups))))
-
 (define (cond? clauses [else values])
   (define (if-clause? clause else-func)
-    (if? (first clause) (second clause) else))
+    (if? (first clause) (second clause) else-func))
   (foldl if-clause? else clauses))
+
+(module+ test
+  (define try-stringify
+    (cond?
+     `((,number? ,number->string)
+       (,symbol? ,symbol->string))))
+  (check string=? (try-stringify 5) "5")
+  (check string=? (try-stringify 'foo) "foo")
+  (check string=? (try-stringify "blah") "blah")
+  (check-equal? (try-stringify '(a b c)) '(a b c))
+  (define try-stringify-void
+    (cond?
+     `((,number? ,number->string)
+       (,symbol? ,symbol->string))
+     void))
+  (check-pred void? (try-stringify-void '(a b c))))
