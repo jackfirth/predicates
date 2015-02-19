@@ -1,4 +1,4 @@
-predicates [![Build Status](https://travis-ci.org/jackfirth/predicates.svg?branch=master)](https://travis-ci.org/jackfirth/predicates) [![Coverage Status](https://coveralls.io/repos/jackfirth/predicates/badge.svg?branch=master)](https://coveralls.io/r/jackfirth/predicates?branch=master)
+predicates
 ==========
 
 [Documentation](http://pkg-build.racket-lang.org/doc/predicates/index.html)
