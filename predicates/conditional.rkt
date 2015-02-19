@@ -1,7 +1,8 @@
 #lang racket
 
 (require "contract-helpers.rkt"
-         "logic.rkt")
+         "logic.rkt"
+         "list.rkt")
 
 (module+ test
   (require rackunit
@@ -69,3 +70,15 @@
   (check-eqv? ((do-while? negative? add10) 13) 23)
   (check-eqv? ((do-until? negative? sub10) 28) -2)
   (check-eqv? ((do-until? negative? sub10) -100) -110))
+
+(define (group vs n)
+  (let loop ([groups '()] [vs vs])
+    (if (not ((length<? n) vs))
+        (let-values ([(next-group next-vs) (split-at vs n)])
+          (loop (cons next-group groups) next-vs))
+        (reverse groups))))
+
+(define (cond? clauses [else values])
+  (define (if-clause? clause else-func)
+    (if? (first clause) (second clause) else))
+  (foldl if-clause? else clauses))
