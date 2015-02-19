@@ -59,7 +59,8 @@
   (check-pred-domain (second? string?) '(6 "faz" c) '(2 #\a))
   (check-pred-domain (rest? empty?) '(blah) '(blah foo))
   (check-pred-domain (all? char?) '(#\a #\b #\c) '(#\a 5 #\c))
-  (check-pred-domain (listof? string? char? char?) '("blah" #\a #\b) '("foo" #\a 8)))
+  (check-pred-domain (listof? string? char? char?) '("blah" #\a #\b) '("foo" #\a 8))
+  (check-pred-domain (list-with-head? string? char?) '("blah" #\a 'any) '("blah" 'not-char 'any)))
 
 (define not-null? (not? null?))
 (define nonempty-list? (and? list? not-null?))
