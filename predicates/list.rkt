@@ -28,6 +28,14 @@
 (define ((length=? n) lst) (= (length lst) n))
 (define ((length<? n) lst) (< (length lst) n))
 
+(module+ test
+  (define length>2? (length>? 2))
+  (define length=2? (length=? 2))
+  (define length<2? (length<? 2))
+  (check-pred-domain length>2? '(1 2 3) '(1))
+  (check-pred-domain length=2? '(1 2) '(1))
+  (check-pred-domain length<2? '(1) '(1 2 3)))
+
 (define (((list-ref? ref) . ps) lst) ((apply and? ps) (ref lst)))
 (define first? (list-ref? first))
 (define second? (list-ref? second))
