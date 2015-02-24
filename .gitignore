@@ -1,5 +1,7 @@
-*\compiled\*
-*\*.bak
-*\*.html
-*\*.css
-*\*.js
+**/compiled/*
+**.bak
+**.html
+**.css
+**.js
+**.1
+**.2

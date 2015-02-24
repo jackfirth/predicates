@@ -372,6 +372,17 @@ source code: @url["https://github.com/jackfirth/predicates"]
     (true? 'foo)
     ]}
 
+@defproc[(without-truthiness [f proc?]) proc?]{
+  Returns a procedure that's like @racket[f], but returns either @racket[#t] or
+  @racket[#f] based on whether @racket[f] returns false. Essentially, this procedure
+  turns functions that rely on returning "truthy" values into function that only
+  return a boolean.
+  @module-examples[
+    (define member? (without-truthiness member))
+    (member? 1 '(1 2 3))
+    (member? 'foo '(1 2 3))
+]}
+
 @defproc[(in-range? [low real?] [high real?] [exclusive? boolean? #f]) (-> any? boolean?)]{
   Returns a predicate that determins in its input is a real number between @racket[low]
   and @racket[high]. If @racket[exclusive?] is @racket[#t], then values @racket[=] to

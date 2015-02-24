@@ -3,6 +3,7 @@
 (require "contract-helpers.rkt")
 
 (provide (contract-out [true? predicate/c]
+                       [without-truthiness (-> procedure? procedure?)]
                        [and? predicate*->/c]
                        [or? predicate*->/c]
                        [not? predicate->/c]
@@ -46,3 +47,12 @@
   (check-true (first-num-or-second-sym? 4 'baz))
   (check-false (first-num-or-second-sym? "smurf" '())))
 
+;; Helper for dealing with truthy predicates
+
+(define (without-truthiness f)
+  (compose true? f))
+
+(module+ test
+  (define member? (without-truthiness member))
+  (check-true (member? 'a '(a b c)))
+  (check-false (member? 1 '(a b c))))
