@@ -3,7 +3,7 @@ predicates [![Build Status](https://travis-ci.org/jackfirth/predicates.svg?branc
 
 [Documentation](http://pkg-build.racket-lang.org/doc/predicates/index.html)
 
-*Deprecated* - For basic logic combinators, use `conjoin`, `disjoin`, and `negate` from `racket/function` instead. For predicate-constructing variants of `eq?` and friends, use a simple lambda shorthand library like `fancy-app` instead. For the more complex combinators, consider them unmaintained.
+**Deprecated** - For basic logic combinators, use `conjoin`, `disjoin`, and `negate` from `racket/function` instead. For predicate-constructing variants of `eq?` and friends, use a simple lambda shorthand library like `fancy-app` instead. For the more complex combinators, consider them unmaintained.
 
 A racket package for creating predicates in a point-free style.
 
