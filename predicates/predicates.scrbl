@@ -27,7 +27,7 @@ source code: @url["https://github.com/jackfirth/predicates"]
 @section{Logic Predicate Constructors}
 
 @defproc[(and? [pred (-> any? boolean?)] ...+) (-> any? boolean?)]{
-  Combines each @racket[pred] into a single predicate that returns @racket[#t] for its
+  Combines each @racket[pred] into a single predicate that returns @racket[#t] for its input
   if all the original @racket[pred]s return @racket[#t] for the input.
   @module-examples[
     (define small-positive-number? (and? number? (λ (x) (< 0 x 10))))
